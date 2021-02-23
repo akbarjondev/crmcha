@@ -48,4 +48,24 @@ const POST = async (req, res) => {
 	}
 }
 
+const PUT = async (req, res) => {
+
+	const { tg_phone, tg_user_id } = req.body
+
+	try {
+		const editedUser = await fetch('update clients set tg_phone = $1 where tg_user_id = $2 returning client_id', tg_phone, tg_user_id)
+		
+		res.send({
+			status: 200,
+			message: 'Client edited',
+			data: editedUser
+		})
+	} catch(e) {
+		console.log(e)
+
+		res.send(e)
+	}
+}
+
 module.exports.POST = POST
+module.exports.PUT = PUT

@@ -17,9 +17,12 @@ const run = (app, express) => {
 		res.send('Admin Panel')
 	})
 
-
 	// API
+	// add client
 	app.post('/bot/clients', BotClients.POST)
+
+	// edit client
+	app.put('/bot/clients', BotClients.PUT)
 
 	app.listen(PORT, () => console.log(`ready at http://localhost:${PORT}`))
 }
