@@ -6,6 +6,7 @@ insert into products (
 )
 values
   ('Set Go''sht', 26000, 'https://prnt.sc/104ppev', 'Info about product'),
-
   ('Set KFC', 26000, 'https://prnt.sc/104pv2t', 'Info about product')
 ;
+
+insert into 
