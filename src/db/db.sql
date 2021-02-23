@@ -11,7 +11,7 @@ create table products(
 	product_info text
 );
 
-create table reserve(
+create table reserves(
 	reserve_id serial not null primary key,
 	reserve_date timestamp with time zone default current_timestamp,
 	reserve_product_count int,
@@ -46,7 +46,7 @@ create table locations(
 	longitude varchar(60)
 );
 
-create table owner(
+create table owners(
 	owner_id serial not null primary key,
 	owner_fullname varchar(70),
 	owner_username varchar(32) not null,
