@@ -20,6 +20,7 @@ const GET = async (req, res) => {
 			message: 'ok',
 			data: allProducts
 		})
+		
 	} catch(e) {
 		console.log(e)
 
@@ -27,4 +28,6 @@ const GET = async (req, res) => {
 	}
 }
 
-module.exports.GET = GET
+module.exports = {
+	GET
+}

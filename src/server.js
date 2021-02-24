@@ -5,20 +5,21 @@ const { PORT } = require('./config/config.js')
 
 const BotClients = require('./modules/bot/clients/clients.js')
 const BotProducts = require('./modules/bot/products/products.js')
+const BotLocations = require('./modules/bot/locations/locations.js')
+const AdminOrders = require('./modules/adminPanel/orders/orders.js')
 
 const run = (app, express) => {
 
 	app.use(express.json())
 
-	// Admin Panel
 	app.engine('html', ejs.renderFile)
 	app.set('view engine', 'html')
 
-	app.get('/admin', (req, res) => {
-		res.send('Admin Panel')
-	})
+	//* ADMIN PANEL *//
+	// get orders
+	app.get('/admin/orders', AdminOrders.GET)
 
-	// BOT API 
+	//* BOT API *// 
 	// add client
 	app.post('/bot/clients', BotClients.POST)
 
@@ -27,6 +28,16 @@ const run = (app, express) => {
 
 	// get all products ready at reserve
 	app.get('/bot/products', BotProducts.GET)
+
+	// get locations
+	app.get('/bot/locations', BotLocations.GET)
+
+	// post locations
+	app.post('/bot/locations', BotLocations.POST)
+
+	// update locations
+	app.put('/bot/locations', BotLocations.PUT)
+
 
 	app.listen(PORT, () => console.log(`ready at http://localhost:${PORT}`))
 }

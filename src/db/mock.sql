@@ -18,12 +18,33 @@ values (789123, 'Ali', 'Valiyev', 'gimmick', '998975562189'), (879546, 'Salim', 
 
 insert into
 	sales(sale_product_count, product_id, client_id, location_id)
-values (3, 1, 2, 2);
+values (2, 1, 1, 2);
 
 insert into
 	locations(client_id, latitude, longitude)
-values(1, '65.546989', '56.568974'), (2, '70.546989', '75.568974');
+values(1, '65.546989', '56.568974'), (1, '70.546989', '75.568974');
 
 insert into
 	owners(owner_fullname, owner_username, owner_password)
 values('Ali Valiyev', 'gimmick', crypt('123', gen_salt('bf'))), ('Karim Salimov', 'karim', crypt('123', gen_salt('bf')));
+
+
+select
+  s.sale_id,
+  s.sale_date,
+  s.sale_completed,
+  s.sale_product_count,
+  s.sale_product_count,
+  l.latitude,
+  l.longitude,
+  p.product_name,
+  p.product_price,
+  p.product_image,
+  p.product_info
+from
+  sales as s
+join
+  products as p on p.product_id = s.product_id
+join
+  locations as l on l.location_id = s.location_id
+;
