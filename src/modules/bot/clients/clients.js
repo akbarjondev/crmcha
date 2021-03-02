@@ -67,5 +67,31 @@ const PUT = async (req, res) => {
 	}
 }
 
-module.exports.POST = POST
-module.exports.PUT = PUT
+const GET_ONE = async (req, res) => {
+
+	const { tg_user_id } = req.body
+
+	try {
+		const client = await fetch('select client_id from clients where tg_user_id = $1', tg_user_id)
+
+		console.log(client)
+
+		res.send({
+			status: 200,
+			message: 'ok',
+			data: client
+		})
+	} catch(e) {
+		console.log(e)
+
+		res.send(e)
+	}
+
+}
+
+module.exports = {
+	POST, 
+	PUT,
+	GET_ONE
+}
+
