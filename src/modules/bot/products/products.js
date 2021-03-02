@@ -4,6 +4,7 @@ const GET = async (req, res) => {
 	try {
 		const SELECT_ALL_PRODUCTS = `
 			select
+				p.product_id,
 				p.product_name, 
 				p.product_price, 
 				p.product_image, 
@@ -28,6 +29,40 @@ const GET = async (req, res) => {
 	}
 }
 
+const GET_ONE = async (req, res) => {
+
+	const { product_id } = req.params
+
+	try {
+		const oneProduct = await fetch(`
+			select
+				p.product_id,
+				p.product_name, 
+				p.product_price, 
+				p.product_image, 
+				p.product_info,
+				r.reserve_product_count
+			from reserves as r
+			join products as p on r.product_id = p.product_id
+				where
+					p.product_id = $1
+			;
+		`, product_id)
+
+		res.send({
+			status: 200,
+			message: 'ok',
+			data: oneProduct
+		})
+		
+	} catch(e) {
+		console.log(e)
+
+		res.send(e)
+	}
+}
+
 module.exports = {
-	GET
+	GET,
+	GET_ONE
 }
