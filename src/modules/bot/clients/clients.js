@@ -69,17 +69,15 @@ const PUT = async (req, res) => {
 
 const GET_ONE = async (req, res) => {
 
-	const { tg_user_id } = req.body
+	const { tg_user_id } = req.params
 
 	try {
 		const client = await fetch('select client_id from clients where tg_user_id = $1', tg_user_id)
 
-		console.log(client)
-
 		res.send({
 			status: 200,
 			message: 'ok',
-			data: client
+			data: client[0]
 		})
 	} catch(e) {
 		console.log(e)

@@ -28,6 +28,8 @@ const GET = async (req, res) => {
 			  locations as l on l.location_id = s.location_id
 			join
 				clients as c on c.client_id = s.client_id
+			where
+				s.location_id <> 0
 			;
 		`
 

@@ -7,11 +7,13 @@ const POST = async (req, res) => {
 	try {
 		
 		const addNewOrder = await fetch(`
-			insert into sales
-				sale_product_count,
-				product_id,
-				client_id,
-				location_id
+			insert into 
+				sales (
+					sale_product_count,
+					product_id,
+					client_id,
+					location_id
+				)
 			values
 				($1, $2, $3, $4)
 			returning
