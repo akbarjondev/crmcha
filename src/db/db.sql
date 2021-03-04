@@ -46,6 +46,24 @@ create table locations(
 	longitude varchar(60)
 );
 
+--create update user location function
+create function write_location() returns trigger language PLPGSQL as $$ begin
+
+	update sales set location_id = new.location_id where client_id = new.client_id and sale_completed = false;
+
+	return new;
+
+end;
+$$;
+
+--add trigger function
+create trigger write_user_location
+before insert on locations
+for each row
+execute procedure write_location();
+
+--insert into locations (client_id, latitude, longitude) values(16, 65.235456, 78.568125) returning client_id, location_id;
+
 create table owners(
 	owner_id serial not null primary key,
 	owner_fullname varchar(70),
