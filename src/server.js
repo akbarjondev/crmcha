@@ -1,8 +1,11 @@
 const ejs = require('ejs')
 const cors = require('cors')
+const http = require('http')
 const parser = require('co-body')
 const { fetch } = require('./db/db.js')
+const { EventEmitter } = require('events')
 const { PORT } = require('./config/config.js')
+
 
 const BotOrders = require('./modules/bot/orders/orders.js')
 const BotClients = require('./modules/bot/clients/clients.js')
@@ -11,10 +14,16 @@ const BotLocations = require('./modules/bot/locations/locations.js')
 
 const AdminOrders = require('./modules/adminPanel/orders/orders.js')
 
+const ee = new EventEmitter()
+
 const run = (app, express) => {
+
+	const server = http.createServer(app)
+	const io = require('socket.io')(server)
 
 	app.use(express.json())
 	app.use(cors())
+
 
 	app.engine('html', ejs.renderFile)
 	app.set('view engine', 'html')
@@ -40,19 +49,64 @@ const run = (app, express) => {
 	app.get('/bot/product/:product_id', BotProducts.GET_ONE)
 
 	// add new order || sale
-	app.post('/bot/order', BotOrders.POST)
+	app.post('/bot/order', async (req, res) => {
+
+		const { sale_product_count, product_id, client_id, location_id } = req.body
+
+		try {
+
+			const data = await BotOrders.POST(sale_product_count, product_id, client_id, location_id)
+			
+
+			res.send({
+				status: 200,
+				message: 'ok',
+				data: data
+			})
+
+		} catch(e) {
+			console.log(e)
+
+			res.send(e)
+		}
+	})
 
 	// get locations
 	app.get('/bot/locations', BotLocations.GET)
 
-	// post locations
-	app.post('/bot/locations', BotLocations.POST)
+	// post locations 
+	app.post('/bot/locations', async (req, res) => {
+		try {
+			const { client_id: client, latitude, longitude } = req.body
+
+			const data = await BotLocations.POST(client, latitude, longitude)
+
+			io.emit('new_order', { data })
+			
+			res.send({
+				status: 200,
+				message: 'ok',
+				data: data
+			})
+
+		} catch(e) {
+			console.log(e)
+		}
+	})
 
 	// update locations
 	app.put('/bot/locations', BotLocations.PUT)
 
 
-	app.listen(PORT, () => console.log(`ready at http://localhost:${PORT}`))
+	io.on('connection', client => {
+
+		console.log('connected: ' + client.id)
+
+	})
+
+
+	server.listen(PORT, () => console.log(`ready at http://localhost:${PORT}`))
 }
 
 module.exports.run = run
+// module.exports.io = io

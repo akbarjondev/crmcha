@@ -25,24 +25,21 @@ const GET = async (req, res) => {
 	}
 }
 
-const POST = async (req, res) => {
+const POST = async (client, latitude, longitude) => {
 	try {
-			const INSERT_LOCATIONS = `insert into locations(client_id, latitude, longitude) values($1, $2, $3) returning location_id`
-			const { client_id: client, latitude, longitude } = req.body
+			const INSERT_LOCATIONS = `
+				insert into 
+					locations(
+						client_id, 
+						latitude, 
+						longitude
+					) 
+				values($1, $2, $3) returning location_id`
 
 			if (client && latitude && longitude) {
 				const data = await fetch(INSERT_LOCATIONS, client, latitude, longitude)
-				res.send({
-					status: 200,
-					message: 'ok',
-					data: data
-				})
-			} else {
-				res.send({
-					status: 400,
-					message: 'bad request',
-					data: data
-				})
+				
+				return data
 			}
 
 	} catch(e) {

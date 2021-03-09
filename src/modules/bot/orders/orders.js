@@ -1,8 +1,8 @@
 const { fetch } = require('./../../../db/db.js')
 
-const POST = async (req, res) => {
+const POST = async (sale_product_count, product_id, client_id, location_id) => {
 	
-	const { sale_product_count, product_id, client_id, location_id } = req.body
+	// const { sale_product_count, product_id, client_id, location_id } = req.body
 
 	try {
 		
@@ -25,15 +25,12 @@ const POST = async (req, res) => {
 				location_id
 		`, sale_product_count, product_id, client_id, location_id)
 
-		res.send({
-			status: 200,
-			message: 'ok',
-			data: addNewOrder
-		})
+		const [ lastOrder ] = addNewOrder
+
+		return lastOrder
+
 	} catch(e) {
 		console.log(e)
-
-		res.send(e)
 	}
 }
 

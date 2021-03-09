@@ -29,7 +29,8 @@ const GET = async (req, res) => {
 			join
 				clients as c on c.client_id = s.client_id
 			where
-				s.location_id <> 0
+				s.location_id <> 0 and sale_completed = false
+			order by s.sale_date asc
 			;
 		`
 
