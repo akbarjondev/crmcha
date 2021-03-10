@@ -31,7 +31,7 @@ create table clients(
 create table sales(
 	sale_id serial not null primary key,
 	sale_date timestamp with time zone default current_timestamp,
-	sale_completed boolean default false,
+	sale_status int default 0,
 	sale_product_count int,
 	product_id int not null references products (product_id),
 	client_id int not null references clients (client_id),
@@ -56,13 +56,13 @@ create function write_location() returns trigger language PLPGSQL as $$ begin
 end;
 $$;
 
+--insert into locations (client_id, latitude, longitude) values(16, 65.235456, 78.568125) returning client_id, location_id;
+
 --add trigger function
 create trigger write_user_location
 before insert on locations
 for each row
 execute procedure write_location();
-
---insert into locations (client_id, latitude, longitude) values(16, 65.235456, 78.568125) returning client_id, location_id;
 
 create table owners(
 	owner_id serial not null primary key,
