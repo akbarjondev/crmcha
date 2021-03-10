@@ -18,7 +18,8 @@ values (789123, 'Ali', 'Valiyev', 'gimmick', '998975562189'), (879546, 'Salim', 
 
 insert into
 	sales(sale_product_count, product_id, client_id, location_id)
-values (2, 1, 1, 2);
+values (2, 1, 1, 2)
+;
 
 insert into
 	locations(client_id, latitude, longitude)
@@ -48,3 +49,26 @@ join
 join
   locations as l on l.location_id = s.location_id
 ;
+
+select
+  s.sale_product_count,
+  p.product_name,
+  p.product_price
+from 
+  sales as s
+join
+  products as p on p.product_id = s.product_id
+where
+  s.status = 0 and s.client_id = 15;
+
+  insert into 
+    sales (
+      sale_product_count,
+      product_id,
+      client_id,
+      location_id
+    )
+  values
+    ($1, $2, $3, $4)
+
+create unique index idx_product_id on sales(product_id);
