@@ -49,7 +49,7 @@ create table locations(
 --create update user location function
 create function write_location() returns trigger language PLPGSQL as $$ begin
 
-	update sales set location_id = new.location_id where client_id = new.client_id and sale_completed = false;
+	update sales set location_id = new.location_id where client_id = new.client_id and sale_status = 1;
 
 	return new;
 
