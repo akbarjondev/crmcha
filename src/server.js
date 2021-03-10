@@ -50,14 +50,11 @@ const run = (app, express) => {
 
 	// add new order || sale
 	app.post('/bot/order', async (req, res) => {
-
 		const { sale_product_count, product_id, client_id, location_id } = req.body
 
 		try {
-
 			const data = await BotOrders.POST(sale_product_count, product_id, client_id, location_id)
 			
-
 			res.send({
 				status: 200,
 				message: 'ok',
@@ -70,6 +67,12 @@ const run = (app, express) => {
 			res.send(e)
 		}
 	})
+
+	// select all products on status basket for basket
+	app.get('/bot/orders/:user_id', BotOrders.GETAll)
+
+	// delete uncompleted orders
+	app.delete('/bot/order', BotOrders.DELETEOrder)
 
 	// get locations
 	app.get('/bot/locations', BotLocations.GET)
