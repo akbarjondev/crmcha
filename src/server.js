@@ -71,8 +71,17 @@ const run = (app, express) => {
 	// select all products on status basket for basket
 	app.get('/bot/orders/:user_id', BotOrders.GETAll)
 
-	// delete uncompleted orders
-	app.delete('/bot/order', BotOrders.DELETEOrder)
+	// edit orders 
+	/*
+	* Status
+	*	0 - basket
+	*	1 - ordered
+	* 2 - coocking
+	* 3 - onway
+	* 4 - completed
+	* 5 - cancelled
+	*/
+	app.put('/bot/order', BotOrders.MAKEStatus)
 
 	// get locations
 	app.get('/bot/locations', BotLocations.GET)

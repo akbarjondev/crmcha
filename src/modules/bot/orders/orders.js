@@ -65,16 +65,28 @@ const GETAll = async (req, res) => {
 
 }
 
-const DELETEOrder = async (req, res) => {
+const MAKEStatus = async (req, res) => {
 
 	try {
-		const { user_id } = req.body
+		const { user_id, status, from_status } = req.body
 
-		const deleted = await fetch('delete from sales where sale_status = 0 and client_id = $1 returning sale_id', user_id)
+		const deleted = await fetch(`
+			update 
+				sales 
+			set 
+				sale_status = $2 
+			where 
+				sale_status = $3 and 
+				client_id = $1 
+			returning 
+				sale_id,
+				sale_status
+			`, 
+			user_id, status, from_status)
 
 		res.send({
 			status: 200,
-			message: 'deleted',
+			message: 'updated',
 			data: deleted
 		})
 
@@ -87,5 +99,5 @@ const DELETEOrder = async (req, res) => {
 module.exports = {
 	POST,
 	GETAll,
-	DELETEOrder,
+	MAKEStatus,
 }
