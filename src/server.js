@@ -13,6 +13,7 @@ const BotProducts = require('./modules/bot/products/products.js')
 const BotLocations = require('./modules/bot/locations/locations.js')
 
 const AdminOrders = require('./modules/adminPanel/orders/orders.js')
+const AdminProducts = require('./modules/adminPanel/products/products.js')
 
 const ee = new EventEmitter()
 
@@ -28,11 +29,21 @@ const run = (app, express) => {
 	app.engine('html', ejs.renderFile)
 	app.set('view engine', 'html')
 
-	//* ADMIN PANEL *//
+	//* ===================== ADMIN PANEL ===================== *//
 	// get orders
 	app.get('/admin/orders', AdminOrders.GET)
 
-	//* BOT API *// 
+	//change order status
+	app.put('/admin/orders', AdminOrders.changeStatus)
+
+	// add product
+	app.post('/admin/product', AdminProducts.addProduct)
+
+	// edit product
+	app.put('/admin/product', AdminProducts.editProduct)
+
+
+	//* ===================== BOT API ===================== *// 
 	// add client
 	app.post('/bot/clients', BotClients.POST)
 
@@ -116,9 +127,7 @@ const run = (app, express) => {
 
 	})
 
-
 	server.listen(PORT, () => console.log(`ready at http://localhost:${PORT}`))
 }
 
 module.exports.run = run
-// module.exports.io = io
