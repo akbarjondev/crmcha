@@ -36,6 +36,9 @@ const run = (app, express) => {
 	//change order status
 	app.put('/admin/orders', AdminOrders.changeStatus)
 
+	// get all filtered orders
+	app.get('/admin/orders/filtered', AdminOrders.getFilteredProducts)
+
 	// get all products
 	app.get('/admin/products', AdminProducts.getProducts)
 
