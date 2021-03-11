@@ -73,6 +73,8 @@ where
 
 create unique index idx_product_id on sales(product_id);
 
+-------------------------------------------
+
 select
   array_agg(s.sale_id) as sale_id,
   array_agg(s.sale_date) as sale_date,
@@ -98,11 +100,12 @@ join
 join
   clients as c on c.client_id = s.client_id
 where
-  s.location_id <> 0 and 
-  sale_status <> 5
+  s.location_id <> 0
 group by c.client_id
 order by sale_date asc
 ;
+
+------------------------------
 
 select 
   array_agg(product_id) as product,

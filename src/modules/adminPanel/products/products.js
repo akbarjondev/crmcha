@@ -71,11 +71,13 @@ const deleteProduct = async (req, res) => {
 		const { id } = req.body
 			
 		const DELETED_PRODUCT = `
-			delete from 
+			update
 				products
+			set
+				product_status = 0
 			where
 				product_id = $1
-			returning product_id
+			returning product_id;
 		`
 
 		const deletedProduct = await fetch(DELETED_PRODUCT, id)
@@ -97,7 +99,12 @@ const getProducts = async (req, res) => {
 	try {
 
 		const GET_PRODUCTs = `
-			select * from products
+			select 
+				* 
+			from 
+				products
+			where
+				product_status = 1;
 		`
 
 		const allProducts = await fetch(GET_PRODUCTs)

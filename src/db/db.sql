@@ -7,11 +7,12 @@ create table products(
 	product_id serial not null primary key,
 	product_name varchar(50) not null,
 	product_price int not null,
-	product_image varchar(60),
+	product_image varchar(255),
 	product_info text,
 	product_status int default 1
 );
 
+alter table products alter column product_image set data type varchar(255);
 -- alter table products add column product_status int default 1;
 
 create table reserves(
