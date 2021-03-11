@@ -9,7 +9,6 @@ const GET = async (req, res) => {
 			  s.sale_date,
 			  s.sale_status,
 			  s.sale_product_count,
-			  s.sale_product_count,
 			  l.latitude,
 			  l.longitude,
 			  p.product_name,
@@ -31,7 +30,7 @@ const GET = async (req, res) => {
 				clients as c on c.client_id = s.client_id
 			where
 				s.location_id <> 0 and 
-				sale_status = 1
+				sale_status <> 5
 			order by s.sale_date asc
 			;
 		`
@@ -49,4 +48,34 @@ const GET = async (req, res) => {
 	}
 }
 
+const changeStatus = async (req, res) => {
+
+	try {
+		const { status, sale_id } = req.body
+
+		const changedStatus = await fetch(`
+			update
+				sales
+			set
+				sale_status = $1
+			where
+				sale_id = $2
+			returning
+				sale_id,
+				sale_status
+		`, status, sale_id)
+
+		res.send({
+			status: 200,
+			message: 'ok',
+			data: changedStatus
+		})
+
+	} catch(e) {
+		console.log(e)
+	}
+
+}
+
 module.exports.GET = GET
+module.exports.changeStatus = changeStatus

@@ -72,3 +72,43 @@ where
     ($1, $2, $3, $4)
 
 create unique index idx_product_id on sales(product_id);
+
+select
+  array_agg(s.sale_id) as sale_id,
+  array_agg(s.sale_date) as sale_date,
+  array_agg(s.sale_status) as sale_status,
+  array_agg(s.sale_product_count) as product_count,
+  array_agg(l.latitude) as latitude,
+  array_agg(l.longitude) as longitude,
+  array_agg(p.product_name) as product_name,
+  array_agg(p.product_price) as product_price,
+  array_agg(p.product_image) as product_image,
+  array_agg(p.product_info) as product_info,
+  c.tg_username as tg_username,
+  c.tg_phone as tg_phone,
+  c.tg_first_name as tg_first_name,
+  c.tg_last_name,
+  c.client_id
+from
+  sales as s
+join
+  products as p on p.product_id = s.product_id
+join
+  locations as l on l.location_id = s.location_id
+join
+  clients as c on c.client_id = s.client_id
+where
+  s.location_id <> 0 and 
+  sale_status <> 5
+group by c.client_id
+order by sale_date asc
+;
+
+select 
+  array_agg(product_id) as product,
+  array_agg(sale_product_count) as product_count,
+  client_id
+from 
+  sales 
+group by client_id;
+
