@@ -8,8 +8,11 @@ create table products(
 	product_name varchar(50) not null,
 	product_price int not null,
 	product_image varchar(60),
-	product_info text
+	product_info text,
+	product_status int default 1
 );
+
+-- alter table products add column product_status int default 1;
 
 create table reserves(
 	reserve_id serial not null primary key,
