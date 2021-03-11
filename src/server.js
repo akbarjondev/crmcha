@@ -36,11 +36,17 @@ const run = (app, express) => {
 	//change order status
 	app.put('/admin/orders', AdminOrders.changeStatus)
 
+	// get all products
+	app.get('/admin/products', AdminProducts.getProducts)
+
 	// add product
 	app.post('/admin/product', AdminProducts.addProduct)
 
 	// edit product
 	app.put('/admin/product', AdminProducts.editProduct)
+
+	// delete product
+	app.delete('/admin/product', AdminProducts.deleteProduct)
 
 
 	//* ===================== BOT API ===================== *// 

@@ -64,7 +64,59 @@ const editProduct = async (req, res) => {
 
 }
 
+const deleteProduct = async (req, res) => {
+
+	try {
+
+		const { id } = req.body
+			
+		const DELETED_PRODUCT = `
+			delete from 
+				products
+			where
+				product_id = $1
+			returning product_id
+		`
+
+		const deletedProduct = await fetch(DELETED_PRODUCT, id)
+
+		res.send({
+			status: 200,
+			message: 'product deleted',
+			data: deletedProduct
+		})
+
+	} catch(e) {
+		console.log(e)
+	}
+
+}
+
+const getProducts = async (req, res) => {
+
+	try {
+
+		const GET_PRODUCTs = `
+			select * from products
+		`
+
+		const allProducts = await fetch(GET_PRODUCTs)
+
+		res.send({
+			status: 200,
+			message: 'ok',
+			data: allProducts
+		})
+
+	} catch(e) {
+		console.log(e)
+	}
+
+}
+
 module.exports = {
 	addProduct,
 	editProduct,
+	getProducts,
+	deleteProduct,
 }
