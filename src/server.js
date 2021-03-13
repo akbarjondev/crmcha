@@ -14,6 +14,7 @@ const BotLocations = require('./modules/bot/locations/locations.js')
 
 const AdminOrders = require('./modules/adminPanel/orders/orders.js')
 const AdminProducts = require('./modules/adminPanel/products/products.js')
+const AdminClients = require('./modules/adminPanel/clients/clients.js')
 
 const ee = new EventEmitter()
 
@@ -50,6 +51,9 @@ const run = (app, express) => {
 
 	// delete product
 	app.delete('/admin/product', AdminProducts.deleteProduct)
+
+	// get all clients count
+	app.get('/admin/clients', AdminClients.getAllClients)
 
 
 	//* ===================== BOT API ===================== *// 
