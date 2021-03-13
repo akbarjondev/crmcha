@@ -146,12 +146,21 @@ const run = (app, express) => {
 	// update locations
 	app.put('/bot/locations', BotLocations.PUT)
 
+	//* ===================== WEB SOCKET ===================== *// 
 
 	io.on('connection', client => {
 
 		console.log('connected: ' + client.id)
+		
+		client.on('order_edited', async ({ sale_id, client_id, status }) => {
+
+			const [ oneClient ] = await fetch(`select tg_user_id from clients where client_id = $1`, client_id)
+
+			io.emit('order_edited_bot', { client: oneClient, status: status })
+		})
 
 	})
+
 
 	server.listen(PORT, () => console.log(`ready at http://localhost:${PORT}`))
 }
