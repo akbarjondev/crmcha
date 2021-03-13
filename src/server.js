@@ -36,9 +36,14 @@ const run = (app, express) => {
 
 	//change order status
 	app.put('/admin/orders', AdminOrders.changeStatus)
+	
+	// get top 3 orders
+	app.get('/admin/top-orders', AdminOrders.getTopProducts)
 
 	// get all filtered orders
 	app.get('/admin/orders/filtered', AdminOrders.getFilteredProducts)
+
+	//----------------------------------------------------
 
 	// get all products
 	app.get('/admin/products', AdminProducts.getProducts)
@@ -51,6 +56,8 @@ const run = (app, express) => {
 
 	// delete product
 	app.delete('/admin/product', AdminProducts.deleteProduct)
+
+	//----------------------------------------------------
 
 	// get all clients count
 	app.get('/admin/clients', AdminClients.getAllClients)
@@ -66,11 +73,15 @@ const run = (app, express) => {
 	// edit client
 	app.put('/bot/clients', BotClients.PUT)
 
+	//----------------------------------------------------
+
 	// get all products ready at reserve
 	app.get('/bot/products', BotProducts.GET)
 
 	// get one product ready at reserve
 	app.get('/bot/product/:product_id', BotProducts.GET_ONE)
+
+	//----------------------------------------------------
 
 	// add new order || sale
 	app.post('/bot/order', async (req, res) => {
@@ -106,6 +117,8 @@ const run = (app, express) => {
 	* 5 - cancelled
 	*/
 	app.put('/bot/order', BotOrders.MAKEStatus)
+
+	//-------------------------------------------------------
 
 	// get locations
 	app.get('/bot/locations', BotLocations.GET)

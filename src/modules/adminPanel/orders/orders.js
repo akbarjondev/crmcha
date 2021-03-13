@@ -127,8 +127,43 @@ const getFilteredProducts = async (req, res) => {
 
 }
 
+const getTopProducts = async (req, res) => {
+
+	try {
+
+		const GET_TOP_PRODUCTS = `
+			select
+			  p.product_name,
+			  p.product_image,
+			  sum(s.sale_product_count) as product_count
+			from 
+			  sales as s
+			join products as p on p.product_id = s.product_id
+			where s.sale_status = 4
+			group by p.product_id
+			-- having sum(s.sale_product_count) > 10
+			order by product_count desc
+			limit 3 
+			;			
+		`
+
+		const getTopProductsData = await fetch(GET_TOP_PRODUCTS)
+
+		res.send({
+			status: 200,
+			message: 'ok',
+			data: getTopProductsData
+		})
+
+	} catch(e) {
+		console.log(e)
+	}
+
+}
+
 module.exports = {
 	getFilteredProducts,
 	GET,
-	changeStatus
+	changeStatus,
+	getTopProducts
 }
