@@ -128,6 +128,7 @@ group by c.client_id
 --eng top 3 buyurtma taomlarni olish
 select
   p.product_name,
+  p.product_image,
   sum(s.sale_product_count) as product_count
 from 
   sales as s
