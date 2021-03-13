@@ -115,3 +115,26 @@ from
   sales 
 group by client_id;
 
+--clients
+select 
+  count(c.client_id) as clients_number,
+  array_agg(s.sale_status) as sale_status 
+from 
+  clients as c
+join sales as s on s.client_id = c.client_id
+group by c.client_id
+;
+
+--eng top 3 buyurtma taomlarni olish
+select
+  p.product_name,
+  sum(s.sale_product_count) as product_count
+from 
+  sales as s
+join products as p on p.product_id = s.product_id
+where s.sale_status = 4
+group by p.product_id
+-- having sum(s.sale_product_count) > 10
+order by product_count desc
+limit 3 
+;
